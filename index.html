@@ -73,12 +73,6 @@
             100% { transform: translateY(0); }
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         .hero-content img {
             animation: float 6s ease-in-out infinite;
         }
@@ -133,7 +127,7 @@
             box-shadow: 0 25px 50px -5px rgba(231, 76, 60, 0.15);
         }
 
-        /* FIXED: Skills card styling with proper initial state */
+        /* Skills card styling - NO ANIMATIONS */
         .skill-card { 
             position: relative; 
             overflow: hidden; 
@@ -143,9 +137,7 @@
             text-align: center; 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            /* Start hidden for proper animation */
-            opacity: 0;
-            transform: translateY(20px);
+            /* Removed initial hidden state - no animations */
         }
         .skill-card::before { 
             content: ''; 
@@ -468,7 +460,7 @@
             font-weight: bold;
         }
 
-        /* FIXED: Contact card styling */
+        /* Contact card styling - NO ANIMATIONS */
         #contact .card {
             width: 100%;
             max-width: 64rem;
@@ -600,23 +592,23 @@
             </div>
         </section>
 
-        <!-- ===== Skills Section ===== -->
+        <!-- ===== Skills Section - NO ANIMATIONS ===== -->
         <section id="skills" class="section">
             <div class="container mx-auto px-6">
                 <h2 class="section-title text-white">My Skills</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                    <div class="skill-card" data-aos="flip-left"><i class="fas fa-code text-4xl text-blue-600 mb-3"></i><p class="font-semibold">C++</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="100"><i class="fab fa-python text-4xl text-yellow-500 mb-3"></i><p class="font-semibold">Python</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="200"><i class="fab fa-js-square text-4xl text-yellow-400 mb-3"></i><p class="font-semibold">JavaScript</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="300"><i class="fab fa-html5 text-4xl text-orange-500 mb-3"></i><p class="font-semibold">HTML5</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="400"><i class="fab fa-css3-alt text-4xl text-blue-500 mb-3"></i><p class="font-semibold">CSS3</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="500"><i class="fab fa-react text-4xl text-cyan-400 mb-3"></i><p class="font-semibold">React.js</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="600"><i class="fab fa-node-js text-4xl text-green-500 mb-3"></i><p class="font-semibold">Node.js</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="700"><i class="fas fa-brain text-4xl text-orange-400 mb-3"></i><p class="font-semibold">TensorFlow</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="800"><i class="fas fa-robot text-4xl text-blue-400 mb-3"></i><p class="font-semibold">Scikit-Learn</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="900"><i class="fab fa-git-alt text-4xl text-red-500 mb-3"></i><p class="font-semibold">Git</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="1000"><i class="fab fa-figma text-4xl text-purple-500 mb-3"></i><p class="font-semibold">Figma</p></div>
-                    <div class="skill-card" data-aos="flip-left" data-aos-delay="1100"><i class="fas fa-database text-4xl text-gray-500 mb-3"></i><p class="font-semibold">MySQL</p></div>
+                    <div class="skill-card"><i class="fas fa-code text-4xl text-blue-600 mb-3"></i><p class="font-semibold">C++</p></div>
+                    <div class="skill-card"><i class="fab fa-python text-4xl text-yellow-500 mb-3"></i><p class="font-semibold">Python</p></div>
+                    <div class="skill-card"><i class="fab fa-js-square text-4xl text-yellow-400 mb-3"></i><p class="font-semibold">JavaScript</p></div>
+                    <div class="skill-card"><i class="fab fa-html5 text-4xl text-orange-500 mb-3"></i><p class="font-semibold">HTML5</p></div>
+                    <div class="skill-card"><i class="fab fa-css3-alt text-4xl text-blue-500 mb-3"></i><p class="font-semibold">CSS3</p></div>
+                    <div class="skill-card"><i class="fab fa-react text-4xl text-cyan-400 mb-3"></i><p class="font-semibold">React.js</p></div>
+                    <div class="skill-card"><i class="fab fa-node-js text-4xl text-green-500 mb-3"></i><p class="font-semibold">Node.js</p></div>
+                    <div class="skill-card"><i class="fas fa-brain text-4xl text-orange-400 mb-3"></i><p class="font-semibold">TensorFlow</p></div>
+                    <div class="skill-card"><i class="fas fa-robot text-4xl text-blue-400 mb-3"></i><p class="font-semibold">Scikit-Learn</p></div>
+                    <div class="skill-card"><i class="fab fa-git-alt text-4xl text-red-500 mb-3"></i><p class="font-semibold">Git</p></div>
+                    <div class="skill-card"><i class="fab fa-figma text-4xl text-purple-500 mb-3"></i><p class="font-semibold">Figma</p></div>
+                    <div class="skill-card"><i class="fas fa-database text-4xl text-gray-500 mb-3"></i><p class="font-semibold">MySQL</p></div>
                 </div>
             </div>
         </section>
@@ -852,11 +844,11 @@
             </div>
         </section>
 
-        <!-- ===== Contact Section ===== -->
+        <!-- ===== Contact Section - NO ANIMATIONS ===== -->
         <section id="contact" class="section section-bg">
             <div class="container mx-auto px-6">
                 <h2 class="section-title">Contact Me</h2>
-                <div class="card" data-aos="zoom-in">
+                <div class="card">
                     <p class="text-center text-gray-600 dark:text-gray-300 mb-8">
                         I'm open to new opportunities and collaborations. Feel free to reach out via email at 
                         <a href="mailto:devanshworkmail5@gmail.com" class="text-red-500 hover:underline font-semibold">devanshworkmail5@gmail.com</a> 
@@ -1000,25 +992,27 @@
                     { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.5 }
                 );
                 
-                // Section animations
+                // Section animations (excluding skills and contact)
                 gsap.utils.toArray('.section').forEach(section => {
-                    const elements = section.querySelectorAll('h2, h3, p, .card, .skill-card, .project-card-enhanced, .leadership-card, .social-work-card');
-                    if (elements.length > 0) {
-                        gsap.fromTo(elements,
-                            { opacity: 0, y: 30 },
-                            { 
-                                opacity: 1, 
-                                y: 0, 
-                                duration: 0.8, 
-                                stagger: 0.1, 
-                                ease: 'power2.out', 
-                                scrollTrigger: { 
-                                    trigger: section, 
-                                    start: 'top 80%', 
-                                    toggleActions: 'play none none reverse' 
-                                } 
-                            }
-                        );
+                    if (!section.id || (section.id !== 'skills' && section.id !== 'contact')) {
+                        const elements = section.querySelectorAll('h2, h3, p, .card, .project-card-enhanced, .leadership-card, .social-work-card');
+                        if (elements.length > 0) {
+                            gsap.fromTo(elements,
+                                { opacity: 0, y: 30 },
+                                { 
+                                    opacity: 1, 
+                                    y: 0, 
+                                    duration: 0.8, 
+                                    stagger: 0.1, 
+                                    ease: 'power2.out', 
+                                    scrollTrigger: { 
+                                        trigger: section, 
+                                        start: 'top 80%', 
+                                        toggleActions: 'play none none reverse' 
+                                    } 
+                                }
+                            );
+                        }
                     }
                 });
                 
@@ -1060,23 +1054,6 @@
                     }
                 });
             }
-            
-            // Intersection Observer for skill cards and other elements
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            // Observe all animated elements
-            const animatedElements = document.querySelectorAll('.skill-card, .leadership-card, .social-work-card');
-            animatedElements.forEach(el => {
-                observer.observe(el);
-            });
         });
     </script>
 </body>
