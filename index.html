@@ -314,6 +314,43 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             backdrop-filter: blur(10px); 
             text-decoration: none; 
+            position: relative;
+        }
+        .floating-nav a .tooltip {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        .floating-nav a .tooltip::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 6px solid rgba(44, 62, 80, 0.95);
+        }
+        .floating-nav a:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            right: 65px;
         }
         .floating-nav a:hover { 
             transform: scale(1.15); 
@@ -324,6 +361,12 @@
         [data-theme="dark"] .floating-nav a { 
             background: rgba(30, 41, 59, 0.9); 
             color: var(--text-primary);
+        }
+        [data-theme="dark"] .floating-nav a .tooltip {
+            background: rgba(15, 23, 42, 0.95);
+        }
+        [data-theme="dark"] .floating-nav a .tooltip::after {
+            border-left-color: rgba(15, 23, 42, 0.95);
         }
 
         /* Enhanced Button Styles */
@@ -411,19 +454,63 @@
             background: #374151;
         }
 
-        /* Leadership and Social Work Section Styles */
-        .leadership-card, .social-work-card {
-            background: var(--bg-secondary);
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 4px solid var(--accent);
+        /* Leadership, Experience, and Social Work Section Styles */
+        .leadership-card, .social-work-card, .experience-card {
+            background: var(--bg-secondary) !important;
+            background-image: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(231, 76, 60, 0.05) 100%) !important;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(231, 76, 60, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 5px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
         }
 
-        .leadership-card:hover, .social-work-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -5px rgba(231, 76, 60, 0.15);
+        .leadership-card::before, .social-work-card::before, .experience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .leadership-card:hover::before, .social-work-card:hover::before, .experience-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .leadership-card:hover, .social-work-card:hover, .experience-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px -5px rgba(231, 76, 60, 0.25);
+            border-left-color: var(--success);
+        }
+
+        /* Achievement card click lift effect */
+        .achievement-card {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .achievement-card:active {
+            transform: translateY(-8px) scale(1.05);
+        }
+
+        .achievement-card-big {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .achievement-card-big {
+                grid-column: span 1;
+            }
         }
 
         .organization-title {
@@ -503,10 +590,11 @@
         [data-theme="dark"] .card { background: var(--bg-secondary); border: 1px solid #374151;}
         [data-theme="dark"] .skill-card { background: var(--bg-secondary); border: 1px solid #374151;}
         [data-theme="dark"] .project-card-enhanced { background: var(--bg-secondary); border: 1px solid #374151;}
-        [data-theme="dark"] .leadership-card, [data-theme="dark"] .social-work-card { 
-            background: var(--bg-secondary); 
+        [data-theme="dark"] .leadership-card, [data-theme="dark"] .social-work-card, [data-theme="dark"] .experience-card { 
+            background: var(--bg-secondary) !important;
+            background-image: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(255, 107, 107, 0.05) 100%) !important; 
             border: 1px solid #374151; 
-            border-left: 4px solid var(--accent);
+            border-left: 5px solid var(--accent);
         }
     </style>
 </head>
@@ -518,13 +606,38 @@
 
     <!-- ===== Floating Navigation ===== -->
     <nav class="floating-nav">
-        <a href="#about" title="About" aria-label="About section"><i class="fas fa-user"></i></a>
-        <a href="#skills" title="Skills" aria-label="Skills section"><i class="fas fa-code"></i></a>
-        <a href="#projects" title="Projects" aria-label="Projects section"><i class="fas fa-briefcase"></i></a>
-        <a href="#leadership" title="Leadership" aria-label="Leadership section"><i class="fas fa-users"></i></a>
-        <a href="#social-work" title="Social Work" aria-label="Social Work section"><i class="fas fa-hands-helping"></i></a>
-        <a href="#achievements" title="Achievements" aria-label="Achievements section"><i class="fas fa-certificate"></i></a>
-        <a href="#contact" title="Contact" aria-label="Contact section"><i class="fas fa-envelope"></i></a>
+        <a href="#about" title="About" aria-label="About section">
+            <i class="fas fa-user"></i>
+            <span class="tooltip">About</span>
+        </a>
+        <a href="#skills" title="Skills" aria-label="Skills section">
+            <i class="fas fa-code"></i>
+            <span class="tooltip">Skills</span>
+        </a>
+        <a href="#projects" title="Projects" aria-label="Projects section">
+            <i class="fas fa-briefcase"></i>
+            <span class="tooltip">Projects</span>
+        </a>
+        <a href="#achievements" title="Achievements" aria-label="Achievements section">
+            <i class="fas fa-certificate"></i>
+            <span class="tooltip">Achievements</span>
+        </a>
+        <a href="#experience" title="Experience" aria-label="Experience section">
+            <i class="fas fa-building"></i>
+            <span class="tooltip">Experience</span>
+        </a>
+        <a href="#leadership" title="Leadership" aria-label="Leadership section">
+            <i class="fas fa-users"></i>
+            <span class="tooltip">Leadership</span>
+        </a>
+        <a href="#social-work" title="Social Work" aria-label="Social Work section">
+            <i class="fas fa-hands-helping"></i>
+            <span class="tooltip">Social Work</span>
+        </a>
+        <a href="#contact" title="Contact" aria-label="Contact section">
+            <i class="fas fa-envelope"></i>
+            <span class="tooltip">Contact</span>
+        </a>
     </nav>
 
     <!-- ===== Header ===== -->
@@ -535,9 +648,10 @@
                 <a href="#about" class="text-white hover:text-red-300 transition-colors">About</a>
                 <a href="#skills" class="text-white hover:text-red-300 transition-colors">Skills</a>
                 <a href="#projects" class="text-white hover:text-red-300 transition-colors">Projects</a>
+                <a href="#achievements" class="text-white hover:text-red-300 transition-colors">Achievements</a>
+                <a href="#experience" class="text-white hover:text-red-300 transition-colors">Experience</a>
                 <a href="#leadership" class="text-white hover:text-red-300 transition-colors">Leadership</a>
                 <a href="#social-work" class="text-white hover:text-red-300 transition-colors">Social Work</a>
-                <a href="#achievements" class="text-white hover:text-red-300 transition-colors">Achievements</a>
                 <a href="#contact" class="btn btn-primary">Contact Me</a>
                 <button id="theme-toggle" class="theme-toggle text-white" aria-label="Toggle theme">🌙</button>
             </div>
@@ -547,9 +661,10 @@
             <a href="#about" class="block py-2 text-white hover:text-red-300 transition-colors">About</a>
             <a href="#skills" class="block py-2 text-white hover:text-red-300 transition-colors">Skills</a>
             <a href="#projects" class="block py-2 text-white hover:text-red-300 transition-colors">Projects</a>
+            <a href="#achievements" class="block py-2 text-white hover:text-red-300 transition-colors">Achievements</a>
+            <a href="#experience" class="block py-2 text-white hover:text-red-300 transition-colors">Experience</a>
             <a href="#leadership" class="block py-2 text-white hover:text-red-300 transition-colors">Leadership</a>
             <a href="#social-work" class="block py-2 text-white hover:text-red-300 transition-colors">Social Work</a>
-            <a href="#achievements" class="block py-2 text-white hover:text-red-300 transition-colors">Achievements</a>
             <a href="#contact" class="block mt-2 btn btn-primary w-full text-center">Contact Me</a>
             <button id="mobile-theme-toggle" class="mt-2 theme-toggle text-white">🌙</button>
         </div>
@@ -582,11 +697,20 @@
                     <div class="lg:w-2/3">
                         <h3 class="text-2xl font-semibold mb-4">Who I Am</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">
-                            Hello! I'm Devansh, a Computer Engineering undergraduate at Thapar Institute of Engineering & Technology. I am deeply interested in Artificial Intelligence and Natural Language Processing. I enjoy applying my knowledge to create practical solutions to complex problems, from developing multimodal stress detection systems to building AI-powered evaluation tools.
+                            I'm Devansh, a pre-final year Computer Engineering student at Thapar Institute of Engineering & Technology, with a strong interest in Machine Learning, Applied AI, and scalable software systems. I enjoy building end-to-end solutions that combine data, algorithms, and clean engineering to solve real-world problems.
                         </p>
-                        <p class="text-gray-600 dark:text-gray-300">
-                            Beyond coding, I have experience in leadership and event management, having served as the Overall Event Coordinator for my university's Entrepreneurship Development Cell. I thrive in collaborative environments and am always eager to learn and take on new challenges.
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            My experience spans deep learning, backend development, real-time systems, and deployment, and I'm comfortable working across the full lifecycle, from experimentation to production. Alongside technical skills, I bring proven leadership and collaboration experience, having coordinated large student-led initiatives and worked with cross-functional teams.
                         </p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            I'm currently seeking internship opportunities in ML/AI or software engineering, where I can contribute meaningfully while learning from experienced teams.
+                        </p>
+                        <div class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-lg">
+                            <h4 class="font-semibold text-lg mb-2 text-gray-800 dark:text-white">Education</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-1"><strong>B.E. Computer Engineering</strong> · CGPA: 8.73</p>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">Thapar Institute of Engineering & Technology, Punjab · Expected 2027</p>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm"><strong>Relevant Coursework:</strong> Data Structures & Algorithms, Operating Systems, Computer Networks, Software Engineering, DBMS, OOP</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -597,6 +721,7 @@
             <div class="container mx-auto px-6">
                 <h2 class="section-title text-white">My Skills</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    <div class="skill-card"><i class="fas fa-code text-4xl text-blue-600 mb-3"></i><p class="font-semibold">C</p></div>
                     <div class="skill-card"><i class="fas fa-code text-4xl text-blue-600 mb-3"></i><p class="font-semibold">C++</p></div>
                     <div class="skill-card"><i class="fab fa-python text-4xl text-yellow-500 mb-3"></i><p class="font-semibold">Python</p></div>
                     <div class="skill-card"><i class="fab fa-js-square text-4xl text-yellow-400 mb-3"></i><p class="font-semibold">JavaScript</p></div>
@@ -604,10 +729,16 @@
                     <div class="skill-card"><i class="fab fa-css3-alt text-4xl text-blue-500 mb-3"></i><p class="font-semibold">CSS3</p></div>
                     <div class="skill-card"><i class="fab fa-react text-4xl text-cyan-400 mb-3"></i><p class="font-semibold">React.js</p></div>
                     <div class="skill-card"><i class="fab fa-node-js text-4xl text-green-500 mb-3"></i><p class="font-semibold">Node.js</p></div>
+                    <div class="skill-card"><i class="fas fa-database text-4xl text-gray-500 mb-3"></i><p class="font-semibold">SQL</p></div>
+                    <div class="skill-card"><i class="fas fa-database text-4xl text-orange-600 mb-3"></i><p class="font-semibold">PL/SQL</p></div>
                     <div class="skill-card"><i class="fas fa-brain text-4xl text-orange-400 mb-3"></i><p class="font-semibold">TensorFlow</p></div>
                     <div class="skill-card"><i class="fas fa-robot text-4xl text-blue-400 mb-3"></i><p class="font-semibold">Scikit-Learn</p></div>
+                    <div class="skill-card"><i class="fas fa-hand text-4xl text-green-400 mb-3"></i><p class="font-semibold">MediaPipe</p></div>
+                    <div class="skill-card"><i class="fas fa-language text-4xl text-purple-400 mb-3"></i><p class="font-semibold">NLTK</p></div>
                     <div class="skill-card"><i class="fab fa-git-alt text-4xl text-red-500 mb-3"></i><p class="font-semibold">Git</p></div>
+                    <div class="skill-card"><i class="fab fa-docker text-4xl text-blue-500 mb-3"></i><p class="font-semibold">Docker</p></div>
                     <div class="skill-card"><i class="fab fa-figma text-4xl text-purple-500 mb-3"></i><p class="font-semibold">Figma</p></div>
+                    <div class="skill-card"><i class="fas fa-cloud text-4xl text-orange-500 mb-3"></i><p class="font-semibold">Oracle Cloud</p></div>
                     <div class="skill-card"><i class="fas fa-database text-4xl text-gray-500 mb-3"></i><p class="font-semibold">MySQL</p></div>
                 </div>
             </div>
@@ -625,7 +756,7 @@
                     <!-- Featured Project: SafeSpace -->
                     <div class="project-card-enhanced" data-aos="zoom-in">
                         <div class="project-image-container">
-                            <img src="36565797-7891-4e2d-8b8b-e93c36f0f83d.png" alt="SafeSpace AI Dashboard" class="project-image">
+                            <img src="Man-sat-at-desk-being-hassled.jpg.webp" alt="SafeSpace AI Dashboard" class="project-image">
                             <div class="project-overlay">
                                 <div class="project-links">
                                     <a href="https://safespaceai.vercel.app" target="_blank" class="project-link"><i class="fas fa-external-link-alt mr-2"></i>Live Demo</a>
@@ -636,21 +767,22 @@
                         <div class="project-content">
                             <div class="featured-badge">Featured Project</div>
                             <div class="project-status">Live</div>
-                            <h3 class="project-title">SafeSpace: Multimodal Stress Detection System</h3>
+                            <h3 class="project-title">SafeSpace: Multimodal Stress Detection System (XAI)</h3>
                             <p class="project-description">
-                                An advanced real-time stress detection platform that combines physiological signals, vocal patterns, and psychological indicators. Features SHAP explainability for transparent AI decision-making and achieved 84% balanced accuracy across multiple stress indicators.
+                                An advanced real-time stress detection platform that combines physiological signals, vocal patterns, and psychological indicators across 4 datasets. Features SHAP/LIME explainability for transparent AI decision-making. Built ESP32-based wearable streaming 4 biosignals at 100Hz. Deployed end-to-end backend inference pipeline with sub-300ms latency, late fusion, and achieved 88% balanced accuracy.
                             </p>
                             <div class="project-tech">
                                 <span class="tech-tag">Python</span>
                                 <span class="tech-tag">TensorFlow</span>
-                                <span class="tech-tag">SHAP</span>
-                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">SHAP/LIME</span>
+                                <span class="tech-tag">ESP32</span>
                                 <span class="tech-tag">Machine Learning</span>
                             </div>
                             <div class="project-stats">
-                                <div class="stat-item"><i class="fas fa-chart-line stat-icon"></i><span>84% Accuracy</span></div>
+                                <div class="stat-item"><i class="fas fa-chart-line stat-icon"></i><span>88% Accuracy</span></div>
                                 <div class="stat-item"><i class="fas fa-brain stat-icon"></i><span>Multimodal AI</span></div>
-                                <div class="stat-item"><i class="fas fa-eye stat-icon"></i><span>Real-time</span></div>
+                                <div class="stat-item"><i class="fas fa-bolt stat-icon"></i><span>&lt;300ms Latency</span></div>
                             </div>
                         </div>
                     </div>
@@ -686,8 +818,42 @@
                         </div>
                     </div>
                     
-                    <!-- Project 3: NLP Evaluator -->
+                    <!-- Project 3: SquadUp -->
                     <div class="project-card-enhanced" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="project-image-container">
+                            <img src="Hackathon-Benefits.png" alt="Event Collaboration Platform" class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link"><i class="fas fa-external-link-alt mr-2"></i>Demo</a>
+                                    <a href="#" class="project-link"><i class="fab fa-github mr-2"></i>Code</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-status">Completed</div>
+                            <br>
+                            <h3 class="project-title">SquadUp: Event Collaboration Platform (MERN)</h3>
+                            <p class="project-description">
+                                Production-grade real-time collaboration app supporting 300+ concurrent users with live events and RSVPs. Optimized sub-120ms latency at 2K+ real-time events/min via Socket.IO, JWT, and Role-Based Access Control.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">MongoDB</span>
+                                <span class="tech-tag">Express.js</span>
+                                <span class="tech-tag">React.js</span>
+                                <span class="tech-tag">Node.js</span>
+                                <span class="tech-tag">Socket.IO</span>
+                                <span class="tech-tag">JWT</span>
+                            </div>
+                            <div class="project-stats">
+                                <div class="stat-item"><i class="fas fa-users stat-icon"></i><span>300+ Users</span></div>
+                                <div class="stat-item"><i class="fas fa-bolt stat-icon"></i><span>&lt;120ms Latency</span></div>
+                                <div class="stat-item"><i class="fas fa-calendar stat-icon"></i><span>2K+ Events/min</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 4: NLP Evaluator -->
+                    <div class="project-card-enhanced" data-aos="zoom-in" data-aos-delay="600">
                         <div class="project-image-container">
                             <img src="2-h.484.ozIsBLNC4ntidJ1vjPKFjCzwqUuPSY3ANLOHpYM5.jpg" alt="AI-powered exam evaluation system" class="project-image">
                             <div class="project-overlay">
@@ -717,6 +883,69 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Project 5: TIET Guest House -->
+                    <div class="project-card-enhanced" data-aos="zoom-in" data-aos-delay="800">
+                        <div class="project-image-container">
+                            <img src="Hostele1.JPG" alt="TIET Guest House Booking System" class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://tiet-guesthouse.vercel.app" target="_blank" class="project-link"><i class="fas fa-external-link-alt mr-2"></i>Live Demo</a>
+                                    <a href="https://github.com/De-Coder05/tiet-guesthouse" target="_blank" class="project-link"><i class="fab fa-github mr-2"></i>Code</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-status">Live</div>
+                            <br>
+                            <h3 class="project-title">TIET Guest House Booking System</h3>
+                            <p class="project-description">
+                                A modern, responsive front-end for the Thapar Institute Guest House Booking System. Features interactive campus navigation, dynamic gallery view, detailed room information, and a user-friendly booking interface. Built with Tailwind CSS and optimized for all devices.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML5</span>
+                                <span class="tech-tag">CSS3</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">Tailwind CSS</span>
+                                <span class="tech-tag">Vercel</span>
+                            </div>
+                            <div class="project-stats">
+                                <div class="stat-item"><i class="fas fa-mobile-alt stat-icon"></i><span>Responsive</span></div>
+                                <div class="stat-item"><i class="fas fa-rocket stat-icon"></i><span>Live</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 6: Blood Bank Management System -->
+                    <div class="project-card-enhanced" data-aos="zoom-in" data-aos-delay="1000">
+                        <div class="project-image-container">
+                            <img src="blood-bank.jpg" alt="Blood Bank Management System" class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link"><i class="fas fa-external-link-alt mr-2"></i>Demo</a>
+                                    <a href="https://github.com/De-Coder05/Blood-Bank-Management-System" target="_blank" class="project-link"><i class="fab fa-github mr-2"></i>Code</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-status">Completed</div>
+                            <br>
+                            <h3 class="project-title">Blood Bank Management System</h3>
+                            <p class="project-description">
+                                A comprehensive Database Management System (DBMS) project designed to demonstrate core database concepts, architecture, and practical implementation. Manages blood inventory, donor records, recipient tracking, and administrative operations with efficient data handling.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">DBMS</span>
+                                <span class="tech-tag">SQL</span>
+                                <span class="tech-tag">Database Design</span>
+                                <span class="tech-tag">Jupyter Notebook</span>
+                            </div>
+                            <div class="project-stats">
+                                <div class="stat-item"><i class="fas fa-database stat-icon"></i><span>DBMS</span></div>
+                                <div class="stat-item"><i class="fas fa-heart stat-icon"></i><span>Healthcare</span></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="text-center mt-12">
@@ -728,26 +957,184 @@
             </div>
         </section>
 
-        <!-- ===== Leadership Section ===== -->
-        <section id="leadership" class="section">
+        <!-- ===== Certifications & Achievements Section ===== -->
+        <section id="achievements" class="section">
             <div class="container mx-auto px-6">
-                <h2 class="section-title text-white">Leadership</h2>
-                <p class="section-subtitle text-gray-200">
+                <h2 class="section-title text-white">Certifications & Achievements</h2>
+                <div class="section-subtitle text-gray-200">
+                    Major recognitions, certifications, skill badges, and milestones in AI, Deep Learning, and innovation.
+                    </div>
+                <div class="grid md:grid-cols-2 gap-8 mt-8">
+                    <!-- Achievement Card 1 - BIG: Smart India Hackathon -->
+                    <div class="achievement-card achievement-card-big bg-gradient-to-r from-yellow-400 to-pink-500 rounded-xl shadow-xl p-8 text-white hover:scale-105 transform transition" data-aos="flip-up">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-trophy text-5xl mr-4"></i>
+                            <div>
+                                <h3 class="text-2xl font-bold">Smart India Hackathon 2025</h3>
+                                <div class="text-base opacity-90 mt-1">🏆 Winner · Government of India</div>
+                    </div>
+                        </div>
+                        <ul class="list-disc ml-8 mb-3 text-lg">
+                            <li><span class="bg-white text-pink-500 font-bold rounded px-3 py-1 ml-1">Winner</span> — Top 0.01% nationwide from 8L+ registrations, 60K+ teams</li>
+                            <li>Recognized for innovation in AI-based solutions</li>
+                            <li>National-level recognition for excellence in hackathon competitions</li>
+                    </ul>
+                </div>
+                    <!-- Achievement Card 2 - BIG: Amazon ML Summer School -->
+                    <div class="achievement-card achievement-card-big bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl shadow-xl p-8 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="200">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-star text-5xl mr-4"></i>
+                            <div>
+                                <h3 class="text-2xl font-bold">Amazon ML Summer School 2025</h3>
+                                <div class="text-base opacity-90 mt-1">Amazon · Machine Learning</div>
+            </div>
+                    </div>
+                        <ul class="list-disc ml-8 mb-3 text-lg">
+                            <li>Selected in <span class="bg-white text-orange-500 font-bold rounded px-3 py-1 ml-1">Top 3000</span> for advanced ML training</li>
+                            <li>Comprehensive training in DNNs, LLMs, and Reinforcement Learning</li>
+                            <li>Exposure to Amazon's ML infrastructure and real-world problem-solving</li>
+                    </ul>
+                </div>
+                    <!-- Achievement Card 3: 5x Oracle Certified -->
+                    <div class="achievement-card bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="400">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-award text-3xl mr-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">5× Oracle Associate Certified (2025)</h3>
+                                <div class="text-sm opacity-80">Oracle · Cloud & AI Foundations</div>
+                            </div>
+                        </div>
+                        <ul class="list-disc ml-8 mb-3 text-base">
+                            <li>Cloud & AI Foundations • Data Platform • MySQL HeatWave</li>
+                            <li>Oracle Cloud Infrastructure Certified Data Science Professional</li>
+                            <li>Expertise in Oracle Cloud services and data science workflows</li>
+                        </ul>
+                    </div>
+                    <!-- Achievement Card 4: Israel-Indian Hackathon -->
+                    <div class="achievement-card bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="600">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-medal text-3xl mr-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">Israel-Indian Hackathon 2025</h3>
+                                <div class="text-sm opacity-80">3rd Place · Bi-national Healthcare Innovation</div>
+                            </div>
+                        </div>
+                        <ul class="list-disc ml-8 mb-3 text-base">
+                            <li>Placed <span class="bg-white text-indigo-500 font-bold rounded px-2 py-0.5 ml-1">3rd</span> among 250+ teams</li>
+                            <li>24-hour bi-national healthcare innovation hackathon</li>
+                        </ul>
+                    </div>
+                    <!-- Achievement Card 5: Thapar Summer School -->
+                    <div class="achievement-card bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="800">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-certificate text-3xl mr-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">Thapar Summer School on AI & Deep Learning</h3>
+                                <div class="text-sm opacity-80">2024 · TIET, Punjab</div>
+                </div>
+                        </div>
+                        <ul class="list-disc ml-8 mb-3 text-base">
+                            <li>Hands-on work with CNNs, RNNs, OpenCV, and IoT (TinkerCAD)</li>
+                            <li>Ranked <span class="bg-white text-indigo-500 font-bold rounded px-2 py-0.5 ml-1">Top 10</span> in 4+ Kaggle-style competitions (75+ participants)</li>
+                            <li>Laid the foundations in Applied Machine Learning</li>
+                        </ul>
+                    </div>
+                    <!-- Achievement Card 6: Thapar ELC -->
+                    <div class="achievement-card bg-gradient-to-r from-green-400 to-blue-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="1000">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-certificate text-3xl mr-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">Thapar ELC Summer Project Internship</h3>
+                                <div class="text-sm opacity-80">July 2025 · Experiential Learning Centre, TIET</div>
+                            </div>
+                        </div>
+                        <ul class="list-disc ml-8 mb-3 text-base">
+                            <li>Developed <span class="font-bold">SafeSpace</span> (Multimodal Stress Detection) — 88% accuracy, SHAP explainability, real-time deployment</li>
+                            <li>Ranked in the <span class="font-bold">Top 15 Projects</span> out of 90+ Projects</li>
+                        </ul>
+                    </div>
+                    <!-- Achievement Card 7: Merit Scholarship -->
+                    <div class="achievement-card bg-gradient-to-r from-pink-500 to-red-400 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="1200">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-graduation-cap text-3xl mr-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">Merit Scholarship, TIET</h3>
+                                <div class="text-sm opacity-80">2021-2025 · Academic Excellence</div>
+                            </div>
+                        </div>
+                        <ul class="list-disc ml-8 mb-3 text-base">
+                            <li>Awarded for securing 95+ %ile in JEE</li>
+                            <li>Granted to <span class="bg-white text-red-500 font-bold rounded px-2 py-0.5 ml-1">top 5%</span> of incoming students</li>
+                            <li>Scored <span class="bg-white text-red-500 font-bold rounded px-2 py-0.5 ml-1">93.4%</span> in 12th Grade (PCM) and <span class="bg-white text-red-500 font-bold rounded px-2 py-0.5 ml-1">94.7%</span> in 10th Grade (CBSE)</li>
+                        </ul>
+                    </div>
+                    <!-- Achievement Card 8: Web Dev Bootcamp -->
+                    <div class="achievement-card bg-gradient-to-r from-teal-500 to-green-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="1400">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-laptop-code text-3xl mr-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">Web Development Bootcamp</h3>
+                                <div class="text-sm opacity-80">Angela Yu · Full-Stack Development</div>
+                            </div>
+                        </div>
+                        <ul class="list-disc ml-8 mb-3 text-base">
+                            <li>Completed 250+ lessons in full-stack development</li>
+                            <li>Comprehensive training in modern web technologies and frameworks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Experience Section ===== -->
+        <section id="experience" class="section section-bg">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Experience</h2>
+                <p class="section-subtitle">
+                    Professional experience and internships in research and development.
+                </p>
+
+                <div class="flex justify-center">
+                    <div class="experience-card" data-aos="fade-right">
+                        <div class="organization-title">
+                            Summer Project Research Intern - SafeSpace
+                        </div>
+                        <div class="role-period">
+                            Experiential Learning Centre, TIET · Jun 2025 – Aug 2025
+                        </div>
+                        <ul class="achievement-list">
+                            <li>Developed SafeSpace, a multimodal stress detection system with 88% balanced accuracy across 4 datasets</li>
+                            <li>Built ESP32-based wearable device streaming 4 biosignals at 100Hz for real-time stress monitoring</li>
+                            <li>Deployed end-to-end backend inference pipeline with sub-300ms latency, late fusion, and SHAP/LIME explainability</li>
+                            <li>Ranked in the Top 15 Projects out of 90+ Projects</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Leadership Section ===== -->
+        <section id="leadership" class="section section-bg">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Leadership</h2>
+                <p class="section-subtitle">
                     Leading teams, organizing events, and driving innovation in entrepreneurship and technology.
                 </p>
 
-                <div class="leadership-card" data-aos="fade-right">
-                    <div class="organization-title">
-                        Entrepreneurship Development Cell, TIET
+                <div class="flex justify-center">
+                    <div class="leadership-card" data-aos="fade-right">
+                        <div class="organization-title">
+                            Entrepreneurship Development Cell, TIET
+                        </div>
+                        <div class="role-period">
+                            Overall Event Coordinator & Core Member · Oct 2023 – May 2025
+                        </div>
+                        <ul class="achievement-list">
+                            <li>Led BizQuest'24, a flagship B-Plan event with 1,000+ registrations and a ₹100K prize pool</li>
+                            <li>Supervised logistics, marketing and judge outreach with a 50+ member team, partnering with MG Motor & Urban Company</li>
+                            <li>Designed 3-D gate flex, social creatives and ID cards for E-Summit'24, serving 2,000+ attendees</li>
+                        </ul>
                     </div>
-                    <div class="role-period">
-                        Overall Event Coordinator & Core Member · Oct 2023 – May 2025
-                    </div>
-                    <ul class="achievement-list">
-                        <li>Led BizQuest'24, a flagship B-Plan event with 1,000+ registrations and a ₹100K prize pool</li>
-                        <li>Supervised logistics, marketing and judge outreach with a 50+ member team, partnering with MG Motor & Urban Company</li>
-                        <li>Designed 3-D gate flex, social creatives and ID cards for E-Summit'24, serving 2,000+ attendees</li>
-                    </ul>
                 </div>
             </div>
         </section>
@@ -760,99 +1147,15 @@
                     Committed to social impact through meaningful initiatives that create positive change in communities.
                 </p>
 
-                <div class="social-work-card" data-aos="fade-left">
-                    <div class="organization-title">Niine Private Ltd. – Campus Ambassador</div>
-                    <div class="role-period">
-                        Mar 2024 – Sept 2024
-                    </div>
-                    <ul class="achievement-list">
-                        <li>Organised a menstrual-hygiene drive reaching 300+ people (50+ under-privileged girls); distributed 5,000+ pads and ran educational workshops</li>
-                        <li>Mobilised a 15-member Enactus team for 100% outreach across hostels, Sodexo staff and institute employees</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== Certifications & Achievements Section ===== -->
-        <section id="achievements" class="section">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title text-white">Certifications & Achievements</h2>
-                <div class="section-subtitle text-gray-200">
-                    Major recognitions, certifications, skill badges, and milestones in AI, Deep Learning, and innovation.
-                </div>
-                <div class="grid md:grid-cols-2 gap-8 mt-8">
-                    <!-- Certification Card 1 -->
-                    <div class="bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up">
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-star text-3xl mr-4"></i>
-                            <div>
-                                <h3 class="text-xl font-bold">Amazon ML Summer School</h3>
-                                <div class="text-sm opacity-80">Amazon · Machine Learning</div>
-                            </div>
+                <div class="flex justify-center">
+                    <div class="social-work-card" data-aos="fade-left">
+                        <div class="organization-title">Niine Private Ltd. – Campus Ambassador</div>
+                        <div class="role-period">
+                            Mar 2024 – Sept 2024
                         </div>
-                        <ul class="list-disc ml-8 mb-3 text-base">
-                            <li>Selected for Amazon's prestigious Machine Learning Summer School program</li>
-                            <li>Comprehensive training in advanced ML concepts and industry applications</li>
-                            <li>Exposure to Amazon's ML infrastructure and real-world problem-solving</li>
-                        </ul>
-                    </div>
-                    <!-- Certification Card 2 -->
-                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="200">
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-award text-3xl mr-4"></i>
-                            <div>
-                                <h3 class="text-xl font-bold">Thapar Summer School on AI & Deep Learning</h3>
-                                <div class="text-sm opacity-80">June 2025 · TIET, Punjab</div>
-                            </div>
-                        </div>
-                        <ul class="list-disc ml-8 mb-3 text-base">
-                            <li>Hands-on work with CNNs, RNNs, OpenCV, and IoT (TinkerCAD)</li>
-                            <li>Ranked <span class="bg-white text-blue-500 font-bold rounded px-2 py-0.5 ml-1">Top 10</span> in 4+ Kaggle-style competitions (75+ participants)</li>
-                            <li>Laid the foundations in Applied Machine Learning</li>
-                        </ul>
-                    </div>
-                    <!-- Certification Card 2 -->
-                    <div class="bg-gradient-to-r from-yellow-400 to-pink-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="200">
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-trophy text-3xl mr-4"></i>
-                            <div>
-                                <h3 class="text-xl font-bold">Smart India Hackathon '24</h3>
-                                <div class="text-sm opacity-80">Feb 2024 · Government of India</div>
-                            </div>
-                        </div>
-                        <ul class="list-disc ml-8 mb-3 text-base">
-                            <li>Cleared internal round; ranked among <span class="bg-white text-pink-500 font-bold rounded px-2 py-0.5 ml-1">Top 40</span> out of 200+ teams</li>
-                            <li>Recognized for innovation in AI-based infrastructure safety (Samptak Project)</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="grid md:grid-cols-2 gap-8 mt-8">
-                    <!-- Certification Card 3 -->
-                    <div class="bg-gradient-to-r from-green-400 to-blue-500 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="400">
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-certificate text-3xl mr-4"></i>
-                            <div>
-                                <h3 class="text-xl font-bold">Thapar ELC Summer Project Internship</h3>
-                                <div class="text-sm opacity-80">July 2025 · Experiential Learning Centre, TIET</div>
-                            </div>
-                        </div>
-                        <ul class="list-disc ml-8 mb-3 text-base">
-                            <li>Developed <span class="font-bold">SafeSpace</span> (Multimodal Stress Detection) — 84% accuracy, SHAP explainability, real-time deployment</li>
-                            <li>Ranked in the <span class="font-bold">Top 15 Projects</span> out of 90+ Projects</li>
-                        </ul>
-                    </div>
-                    <!-- Certification Card 4 -->
-                    <div class="bg-gradient-to-r from-pink-500 to-red-400 rounded-xl shadow-xl p-6 text-white hover:scale-105 transform transition" data-aos="flip-up" data-aos-delay="600">
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-medal text-3xl mr-4"></i>
-                            <div>
-                                <h3 class="text-xl font-bold">Academic Excellence & Leadership</h3>
-                                <div class="text-sm opacity-80">2021-2025 · BGS Int'l School & TIET, Punjab</div>
-                            </div>
-                        </div>
-                        <ul class="list-disc ml-8 mb-3 text-base">
-                            <li>Scored <span class="bg-white text-red-500 font-bold rounded px-2 py-0.5 ml-1">93.4%</span> in 12th Grade (PCM) and <span class="bg-white text-red-500 font-bold rounded px-2 py-0.5 ml-1">94.7%</span> in 10th Grade (CBSE)</li>
-                            <li>Ranked in the Top 55k in JEE MAINS'23 among 140k+ participants</li>
+                        <ul class="achievement-list">
+                            <li>Organised a menstrual-hygiene drive reaching 300+ people (50+ under-privileged girls); distributed 5,000+ pads and ran educational workshops</li>
+                            <li>Mobilised a 15-member Enactus team for 100% outreach across hostels, Sodexo staff and institute employees</li>
                         </ul>
                     </div>
                 </div>
@@ -860,7 +1163,7 @@
         </section>
 
         <!-- ===== Contact Section - NO ANIMATIONS ===== -->
-        <section id="contact" class="section section-bg">
+        <section id="contact" class="section">
             <div class="container mx-auto px-6">
                 <h2 class="section-title">Contact Me</h2>
                 <div class="card">
@@ -897,8 +1200,10 @@
     <footer class="bg-gray-800 text-white py-10">
         <div class="container mx-auto px-6 text-center">
             <div class="mb-4 space-x-4">
-                <a href="#" class="text-gray-400 hover:text-red-400 transition-colors" aria-label="GitHub"><i class="fab fa-github fa-2x"></i></a>
-                <a href="#" class="text-gray-400 hover:text-red-400 transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin fa-2x"></i></a>
+                <a href="https://github.com/De-Coder05" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-red-400 transition-colors" aria-label="GitHub"><i class="fab fa-github fa-2x"></i></a>
+                <a href="https://www.linkedin.com/in/devanshwadhwani/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-red-400 transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin fa-2x"></i></a>
+                <a href="https://leetcode.com/u/DeCoder05/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-red-400 transition-colors" aria-label="LeetCode"><i class="fas fa-code fa-2x"></i></a>
+                <a href="https://www.kaggle.com/decoder05" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-red-400 transition-colors" aria-label="Kaggle"><i class="fab fa-kaggle fa-2x"></i></a>
             </div>
             <p class="text-gray-500">&copy; 2025 Devansh Wadhwani. All rights reserved.</p>
         </div>
@@ -936,40 +1241,26 @@
                 });
             }
             
-            // Smooth scrolling function
-            function smoothScrollTo(target, duration = 1000) {
+            // Smooth scrolling function - optimized for instant response
+            function smoothScrollTo(target, duration = 400) {
                 const targetElement = document.querySelector(target);
                 if (!targetElement) return;
                 const targetPosition = targetElement.offsetTop - 80;
-                const startPosition = window.pageYOffset;
-                const distance = targetPosition - startPosition;
-                let startTime = null;
-                
-                function animation(currentTime) {
-                    if (startTime === null) startTime = currentTime;
-                    const timeElapsed = currentTime - startTime;
-                    const run = ease(timeElapsed, startPosition, distance, duration);
-                    window.scrollTo(0, run);
-                    if (timeElapsed < duration) requestAnimationFrame(animation);
-                }
-                
-                function ease(t, b, c, d) {
-                    t /= d / 2;
-                    if (t < 1) return c / 2 * t * t + b;
-                    t--;
-                    return -c / 2 * (t * (t - 2) - 1) + b;
-                }
-                
-                requestAnimationFrame(animation);
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
             }
             
-            // Smooth scrolling for anchor links
+            // Smooth scrolling for anchor links - instant click response
             const anchorLinks = document.querySelectorAll('a[href^="#"]');
             anchorLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const target = this.getAttribute('href');
-                    if (target && target !== '#') smoothScrollTo(target);
+                    if (target && target !== '#') {
+                        smoothScrollTo(target);
+                    }
                 });
             });
             
@@ -1069,6 +1360,17 @@
                     }
                 });
             }
+
+            // Achievement cards click lift-up effect
+            const achievementCards = document.querySelectorAll('.achievement-card');
+            achievementCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.05)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
         });
     </script>
 </body>
